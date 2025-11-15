@@ -1,7 +1,4 @@
 package DAO;
-
-
-
 import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 import java.util.*;
-
-
-
 import confg.Database;
 import model.User;
 
@@ -53,7 +47,7 @@ public class UserRepo implements UserDao {
 			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery(select);
 			while(rs.next()) {
-				User user = new User();
+				User user = new User("", "");
 				user.setId(rs.getString("id"));
 				user.setNama(rs.getString("name"));
 				user.setUsername(rs.getString("username"));
@@ -101,6 +95,37 @@ public class UserRepo implements UserDao {
 		
 		
 	}
+	public boolean isUsernameExist(String username, String excludeId) {
+	    String query = "SELECT COUNT(*) FROM user WHERE username = ? AND id != ?";
+	    try (PreparedStatement st = connection.prepareStatement(query)) {
+	        st.setString(1, username);
+	        st.setString(2, excludeId);
+	        ResultSet rs = st.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	public boolean isPasswordExist(String password, String excludeId) {
+	    String query = "SELECT COUNT(*) FROM user WHERE password = ? AND id != ?";
+	    try (PreparedStatement st = connection.prepareStatement(query)) {
+	        st.setString(1, password);
+	        st.setString(2, excludeId);
+	        ResultSet rs = st.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+
 	
 
 }
