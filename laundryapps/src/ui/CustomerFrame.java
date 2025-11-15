@@ -27,6 +27,7 @@ public class CustomerFrame extends JFrame {
     private JPanel contentPane;
     public String id;
     List<Customer> ls;
+    
 
     CustomerRepo customerRepo = CustomerRepo.getInstance();
 
@@ -141,7 +142,6 @@ public class CustomerFrame extends JFrame {
                         .setHp(txtCustomerPhone.getText())
                         .setEmail(txtCustomerEmail.getText())
                         .build();
-
                 customerRepo.save(customer);
                 reset();
                 loadTable();
