@@ -1,5 +1,4 @@
 package DAO;
-
 import confg.Database;
 import model.Customer;
 import model.CustomerBuilder;
@@ -16,8 +15,6 @@ public class CustomerRepo implements CustomerDao {
 	    }
 	    return instance;
 	}
-
-
     private Connection connection;
 
     private final String insert = "INSERT INTO customer (nama, alamat, no_Hp, email) VALUES (?, ?, ?, ?);";
