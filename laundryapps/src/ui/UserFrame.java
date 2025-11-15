@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import DAO.UserRepo;
+import error1.ValidationException1;
 import model.User;
 import table.TableUser;
 
@@ -26,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
+import util1.ValidationUtilUser;
 
  
 
@@ -106,33 +108,51 @@ public class UserFrame extends JFrame {
 		btnSave.setBackground(new Color(128, 255, 128));
 		
 		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				User user = new User();
-				user.setNama(txtName.getText());
-				user.setUsername(txtUsername.getText());
-				user.setPassword(txtPassword.getText());
-				usr.save(user);
-				reset();
-				
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        User user = new User("", "");
+		        user.setNama(txtName.getText());
+		        user.setUsername(txtUsername.getText());
+		        user.setPassword(txtPassword.getText());
+
+		        try {
+		            ValidationUtilUser.validateForSave(user); // untuk insert baru
+		            usr.save(user);
+		            reset();
+		            loadTable();
+		            JOptionPane.showMessageDialog(null, "User saved successfully!");
+		        } 
+		        catch (ValidationException1 | NullPointerException ex) {
+		            JOptionPane.showMessageDialog(null, "Validation Error:\n" + ex.getMessage());
+		        }
+		    }
 		});
+
 		btnSave.setBounds(214, 266, 108, 29);
 		contentPane.add(btnSave);
 		
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setBackground(new Color(128, 255, 255));
 		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				User user = new User();
-				user.setNama(txtName.getText());
-				user.setUsername(txtUsername.getText());
-				user.setId(id);
-				usr.update(user);
-				reset();
-				loadTable();
-				
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        User user = new User("", "");
+		        user.setId(id);
+		        user.setNama(txtName.getText());
+		        user.setUsername(txtUsername.getText());
+		        user.setPassword(txtPassword.getText());
+
+		        try {
+		            ValidationUtilUser.validateForUpdate(user); // versi update
+		            usr.update(user);
+		            reset();
+		            loadTable();
+		            JOptionPane.showMessageDialog(null, "User updated successfully!");
+		        } 
+		        catch (ValidationException1 | NullPointerException ex) {
+		            JOptionPane.showMessageDialog(null, "Update Failed:\n" + ex.getMessage());
+		        }
+		    }
 		});
+
 		btnUpdate.setBounds(332, 266, 105, 29);
 		contentPane.add(btnUpdate);
 		
