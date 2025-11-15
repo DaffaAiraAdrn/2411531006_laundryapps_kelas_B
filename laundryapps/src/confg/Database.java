@@ -11,9 +11,9 @@ public class Database {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/laundry_apps", "root", "");
-                System.out.println("Koneksi database berhasil!");
+                System.out.println("Berhasil terkoneksi dengan Database");
             } catch (ClassNotFoundException | SQLException e) {
-                JOptionPane.showMessageDialog(null, "Koneksi database gagal:\n" + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Koneksi pada database gagal" + e.getMessage());
             }
         }
         return conn;
